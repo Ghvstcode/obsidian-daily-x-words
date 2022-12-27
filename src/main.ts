@@ -48,7 +48,7 @@ export default class XDailyWords extends Plugin {
 
 		this.registerView(
 			VIEW_TYPE_STATS_TRACKER,
-			(leaf: WorkspaceLeaf) => (this.view = new StatsTrackerView(leaf, this.settings.dayCounts))
+			(leaf: WorkspaceLeaf) => (this.view = new StatsTrackerView(leaf, this.settings.dayCounts, this.settings.targetDailyWords))
 		);
 
 		this.addCommand({
@@ -81,7 +81,7 @@ export default class XDailyWords extends Plugin {
 
 		this.registerInterval(
 			window.setInterval(() => {
-				this.statusBarEl.setText(this.currentWordCount + " words today ");
+				this.statusBarEl.setText(Math.round(this.currentWordCount/this.settings.targetDailyWords *100).toFixed(2) + "%");
 			}, 200)
 		);
 

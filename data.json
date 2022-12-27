@@ -1,0 +1,12 @@
+{
+  "targetDailyWords": 30,
+  "dayCounts": {
+    "2022/11/27": 275
+  },
+  "todaysWordCount": {
+    "2022-12-26.md": {
+      "initial": 21,
+      "current": 296
+    }
+  }
+}

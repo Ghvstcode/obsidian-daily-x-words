@@ -7,16 +7,18 @@ import '../styles.css';
 
 export default class StatsTrackerView extends ItemView {
     private dayCounts: Record<string, number>;
+    target: number;
 
-    constructor(leaf: WorkspaceLeaf, dayCounts: Record<string, number>) {
+    constructor(leaf: WorkspaceLeaf, dayCounts: Record<string, number>, target: number) {
         super(leaf);
         this.dayCounts = dayCounts;
+        this.target = target;
 
         this.registerInterval(
             window.setInterval(() => {
                 ReactDOM.render(React.createElement(Calendar, {
                     data: Object.keys(this.dayCounts).map(day => {
-                        return { "date": new Date(new Date(day).setMonth(new Date(day).getMonth() + 1)), "count": this.dayCounts[day] }
+                        return { "date": new Date(new Date(day).setMonth(new Date(day).getMonth() + 1)), "count": this.dayCounts[day], "target": this.target }
                     }),
                 }), (this as any).contentEl);
             }, 1000)
@@ -38,7 +40,7 @@ export default class StatsTrackerView extends ItemView {
     async onOpen() {
         ReactDOM.render(React.createElement(Calendar, {
             data: Object.keys(this.dayCounts).map(day => {
-                return { "date": new Date(new Date(day).setMonth(new Date(day).getMonth() + 1)), "count": this.dayCounts[day] }
+                return { "date": new Date(new Date(day).setMonth(new Date(day).getMonth() + 1)), "count": this.dayCounts[day], "target": this.target}
             }),
         }), (this as any).contentEl);
     }

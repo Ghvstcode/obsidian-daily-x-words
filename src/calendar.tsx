@@ -6,20 +6,16 @@ interface HeatmapProps {
     data: any[];
 }
 
-const getColorLevel = (count: number) => {
-    if (count < 150) {
+const getColorLevel = (count: number, target: number) => {
+    if (count < target && count > 0){
         return 1;
     }
-    if (count < 400) {
-        return 2;
+
+    if (count >= target){
+        return 4
     }
-    if (count < 750) {
-        return 3;
-    }
-    if (count < 1500) {
-        return 4;
-    }
-    return 5;
+
+    return 0;
 }
 
 class Heatmap extends React.Component<HeatmapProps> {
@@ -29,7 +25,7 @@ class Heatmap extends React.Component<HeatmapProps> {
             const base = getComputedStyle(element).getPropertyValue("color");
             for (let elem of Array.from(document.getElementsByClassName("color1") as HTMLCollectionOf<HTMLElement>)) {
                 elem.style.fill = base;
-                elem.style.opacity = "0.44";
+                elem.style.opacity = "0.2";
             }
             for (let elem of Array.from(document.getElementsByClassName("color2") as HTMLCollectionOf<HTMLElement>)) {
                 elem.style.fill = base;
@@ -61,8 +57,10 @@ class Heatmap extends React.Component<HeatmapProps> {
                     if (!value || value.count == 0) {
                         return 'color-empty';
                     }
-                    return `color${getColorLevel(value.count)}`;
+        
+                    return `color-scale-${getColorLevel(value.count, value.target)}`;
                 }}
+                onClick = {(value) => alert(`you have written ${value.count} words on ${new Date(value.date).toLocaleDateString()}! You have ${value.target - value.count} to go.`)}
                 titleForValue={(value) => !value || value.date === null ? '' : value.count + ' words on ' + new Date(value.date).toLocaleDateString()}
             />
             <div id="color-elem" />
