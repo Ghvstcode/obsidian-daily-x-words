@@ -1,4 +1,4 @@
-import { TFile, Plugin, MarkdownView, debounce, Debouncer, WorkspaceLeaf, addIcon } from 'obsidian';
+import { TFile, Plugin, MarkdownView, debounce, Debouncer, WorkspaceLeaf, addIcon, App, PluginSettingTab, Setting, Modal } from 'obsidian';
 import { VIEW_TYPE_STATS_TRACKER } from './constants';
 import StatsTrackerView from './view';
 
@@ -7,18 +7,23 @@ interface WordCount {
 	current: number;
 }
 
-interface DailyStatsSettings {
+interface XDailyWordsSettings {
+	targetDailyWords: number;
 	dayCounts: Record<string, number>;
 	todaysWordCount: Record<string, WordCount>;
 }
 
-const DEFAULT_SETTINGS: DailyStatsSettings = {
+const DEFAULT_TARGET: number = 500
+
+const DEFAULT_SETTINGS: XDailyWordsSettings = {
+	targetDailyWords: DEFAULT_TARGET,
 	dayCounts: {},
 	todaysWordCount: {}
 }
 
-export default class DailyStats extends Plugin {
-	settings: DailyStatsSettings;
+
+export default class XDailyWords extends Plugin {
+	settings: XDailyWordsSettings;
 	statusBarEl: HTMLElement;
 	currentWordCount: number;
 	today: string;
@@ -58,6 +63,17 @@ export default class DailyStats extends Plugin {
 				this.initLeaf();
 			},
 		});
+
+		// This adds a simple command that can be triggered anywhere
+		this.addCommand({
+			id: 'open-sample-modal-simple',
+			name: 'Wann',
+			callback: () => {
+				new PromptModal(this.app).open();
+			}
+		});
+
+		this.addSettingTab(new SettingTab(this.app, this));
 
 		this.registerEvent(
 			this.app.workspace.on("quick-preview", this.onQuickPreview.bind(this))
@@ -155,3 +171,68 @@ export default class DailyStats extends Plugin {
 		}
 	}
 }
+
+class SettingTab extends PluginSettingTab {
+	plugin: XDailyWords;
+
+	constructor(app: App, plugin: XDailyWords) {
+		super(app, plugin);
+		this.plugin = plugin;
+	}
+
+	display(): void {
+		const {containerEl} = this;
+
+		containerEl.empty();
+
+		containerEl.createEl('h2', {text: 'Settings for x-words-a-day'});
+
+		new Setting(containerEl)
+			.setName('Target Words')
+			.setDesc('The number of words you will like to write daily — If you write less than that limit for a specific your graph will shouw red')
+			.addText(text => text
+				.setPlaceholder('Enter your target number of words')
+				.setValue(this.plugin.settings.targetDailyWords.toString())
+				.onChange(async (value) => {
+					console.log('Secret: ' + value);
+					let num = parseNumber(value)
+					if (num == null){
+						num = DEFAULT_TARGET
+					}
+					this.plugin.settings.targetDailyWords = num;
+					await this.plugin.saveSettings();
+				}));
+	}
+}
+
+class PromptModal extends Modal {
+	constructor(app: App) {
+		super(app);
+	}
+
+	onOpen() {
+		const {contentEl} = this;
+		contentEl.createEl("h1", { text: "Need an idea for something to write about?" });
+
+		//TODO - make this a dynamic content
+		contentEl.createEl("div", { text: "Woah!-write about how cute your cat it, perhaps?" });
+	}
+
+	onClose() {
+		const {contentEl} = this;
+		contentEl.empty();
+	}
+}
+
+function parseNumber(str: string): number | null {
+	try {
+	  const num = parseInt(str);
+	  if (isNaN(num)) {
+		return null;
+	  }
+	  return num;
+	} catch (error) {
+	  //console.error(error.message);
+	  return null;
+	}
+  }
