@@ -11,7 +11,7 @@ rect:hover {
 * Default color scale
 */
 .react-calendar-heatmap .color-empty {
-    fill: #f38484;
+    fill: #969696;
   }
 
   .react-calendar-heatmap .color-scale-1 { fill: #d6e685; }

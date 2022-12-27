@@ -60,7 +60,7 @@ class Heatmap extends React.Component<HeatmapProps> {
         
                     return `color-scale-${getColorLevel(value.count, value.target)}`;
                 }}
-                onClick = {(value) => alert(`you have written ${value.count} words on ${new Date(value.date).toLocaleDateString()}! You have ${value.target - value.count} to go.`)}
+                onClick = {(value) => alert(`you have written ${value.count} words on ${new Date(value.date).toLocaleDateString()}! You have ${Math.max(value.target - value.count, 0)} to go.`)}
                 titleForValue={(value) => !value || value.date === null ? '' : value.count + ' words on ' + new Date(value.date).toLocaleDateString()}
             />
             <div id="color-elem" />

@@ -21,6 +21,78 @@ const DEFAULT_SETTINGS: XDailyWordsSettings = {
 	todaysWordCount: {}
 }
 
+const prompts: string[] = [
+	'Describe a moment when you felt really loved',
+	'What was the most memorable vacation you ever took, and why?',
+	'Tell the story of your first job',
+	'Write about a challenging experience you faced and how you overcame it',
+	'Describe a time when you helped someone and how it made you feel',
+	'What is a place you would love to visit and why?',
+	'Write about a time you achieved a goal and how it made you feel',
+	'Who is a person who has greatly influenced you, and how have they impacted your life?',
+	'What is a hobby that brings you joy and why?',
+	'Write about a time when you were particularly proud of yourself',
+	'Recall a moment when you were really happy',
+	'Remember a time when you were really sad',
+	'Describe a time when you were really angry',
+	'Write about a time when you were really scared',
+	'Remember a time when you were really excited',
+	'Describe a time when you were really hopeful',
+	'Write about a time when you were really hopeless',
+	'Remember a time when you were really grateful',
+	'Describe a time when you were really jealous',
+	'Describe a moment when you felt really loved',
+	'What was the most memorable vacation you ever took, and why?',
+	'Tell the story of your first job',
+	'Write about a challenging experience you faced and how you overcame it',
+	'Describe a time when you helped someone and how it made you feel',
+	'What is a place you would love to visit and why?',
+	'Write about a time you achieved a goal and how it made you feel',
+	'Who is a person who has greatly influenced you, and how have they impacted your life?',
+	'What is a hobby that brings you joy and why?',
+	'Write about a time when you were particularly proud of yourself',
+	'Recall a moment when you were really happy',
+	'Remember a time when you were really sad',
+	'Describe a time when you were really angry',
+	'Write about a time when you were really scared',
+	'Remember a time when you were really excited',
+	'Describe a time when you were really hopeful',
+	'Write about a time when you were really hopeless',
+	'Remember a time when you were really grateful',
+	'Describe a time when you were really jealous',
+	'Write about a time when you were really embarrassed',
+	'Remember a time when you were really confused',
+	'Describe a time when you were really proud of someone else',
+	'Write about a time when you were really disappointed in someone else',
+	'Recall a time when you were really surprised',
+	'Remember a time when you were really curious',
+	'Write about a time when you were really content',
+	'Describe a time when you were really frustrated',
+	'Write about a time when you were really overwhelmed',
+	'Remember a time when you were really underwhelmed',
+	'Write about a time when you felt really fulfilled',
+	'Describe a time when you felt really incomplete',
+	'Write about a time when you felt really alone',
+	'Remember a time when you felt really connected to others',
+	'Write about a time when you felt really appreciated',
+	'Describe a time when you felt really undervalued',
+	'Write about a time when you felt really misunderstood',
+	'Remember a time when you felt really understood',
+	'Write about a time when you felt really valued',
+	'Describe a time when you felt really unimportant',
+	'Write about a time when you felt really confident',
+	'Remember a time when you felt really insecure',
+	'Write about a time when you felt really empowered',
+]  
+
+function getSuggestion() {
+	// Choose a random topic from the topics array
+	const suggestion = prompts[Math.floor(Math.random() * prompts.length)];
+	return suggestion;
+  }
+  
+  // Get a suggestion for the user
+  const suggestion = getSuggestion();
 
 export default class XDailyWords extends Plugin {
 	settings: XDailyWordsSettings;
@@ -81,7 +153,7 @@ export default class XDailyWords extends Plugin {
 
 		this.registerInterval(
 			window.setInterval(() => {
-				this.statusBarEl.setText(Math.round(this.currentWordCount/this.settings.targetDailyWords *100).toFixed(2) + "%");
+				this.statusBarEl.setText(Math.min(Math.round(this.currentWordCount/this.settings.targetDailyWords *100).toFixed(2), 100)+ "%");
 			}, 200)
 		);
 
@@ -215,7 +287,7 @@ class PromptModal extends Modal {
 		contentEl.createEl("h1", { text: "Need an idea for something to write about?" });
 
 		//TODO - make this a dynamic content
-		contentEl.createEl("div", { text: "Woah!-write about how cute your cat it, perhaps?" });
+		contentEl.createEl("div", { text: getSuggestion() });
 	}
 
 	onClose() {
