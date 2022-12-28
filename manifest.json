@@ -1,10 +1,10 @@
 {
-	"id": "obsidian-daily-stats",
+	"id": "obsidian-daily-x-words",
 	"name": "Daily X Words",
-	"version": "1.0.4",
+	"version": "1.0.0",
 	"minAppVersion": "0.10.12",
-	"description": "Track your daily word count across all notes in your vault.",
-	"author": "Dhruvik Parikh",
-	"authorUrl": "https://github.com/dhruvik7",
+	"description": "A plugin for Obsidian that helps you track and visualize your daily writing progress",
+	"author": "Tobi Okewole",
+	"authorUrl": "https://github.com/Ghvstcode",
 	"isDesktopOnly": true
 }
