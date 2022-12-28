@@ -1,4 +1,4 @@
-## daily-x-words
+## Daily-x-words
 
 A plugin for Obsidian that helps you track and visualize your daily writing progress.
 
@@ -27,8 +27,9 @@ This plugin was inspired by the [Five Hundred Words a Day website](https://www.f
 
 ### Future Improvements
 
-Integration with the OpenAI API to provide more dynamic prompts and inline text completion.
-Contributing
+- Integration with the OpenAI API to provide more dynamic prompts and inline text completion.
+
+### Contributing
 
 If you would like to contribute to the development of the daily-x-words plugin, please feel free to fork the repository and submit pull requests with your changes.
 
